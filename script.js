@@ -42,13 +42,39 @@ prayerForm.addEventListener('submit', (event) => {
   const body = encodeURIComponent(`Name: ${name}\nContact: ${contact}\nType: ${type}\n\nMessage:\n${message}`);
 
   formStatus.textContent = 'Opening your email app...';
-  window.location.href = `mailto:info@waymakerfellowshipchurch.org?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:info@TWMFC.org?subject=${subject}&body=${body}`;
 
   setTimeout(() => {
-    formStatus.textContent = 'If email did not open, copy the message and send it to the church email or WhatsApp.';
+    formStatus.textContent = 'If email did not open, copy the message and send it to info@TWMFC.org or call +1 551 330 6121.';
   }, 1500);
 });
 
+function animateCounter(el, target, duration = 1400) {
+  let start = 0;
+  const startTime = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const value = Math.floor(start + (target - start) * progress);
+    el.textContent = value.toLocaleString();
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function updateLiveInfographic() {
+  const launchDate = new Date('2024-08-01T00:00:00');
+  const now = new Date();
+  const days = Math.max(1, Math.floor((now - launchDate) / 86400000));
+  const daysOnline = document.getElementById('daysOnline');
+  const localTime = document.getElementById('localTime');
+  if (daysOnline) daysOnline.textContent = days.toLocaleString();
+  if (localTime) localTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+updateLiveInfographic();
+setInterval(updateLiveInfographic, 1000);
+
+document.querySelectorAll('[data-count]').forEach((el) => animateCounter(el, Number(el.dataset.count)));
 
 const zelleButton = document.querySelector('.copy-zelle');
 if (zelleButton) {
@@ -56,7 +82,7 @@ if (zelleButton) {
     const details = zelleButton.dataset.zelle;
     try {
       await navigator.clipboard.writeText(details);
-      zelleButton.textContent = 'Zelle details copied';
+      zelleButton.textContent = 'Giving note copied';
     } catch (error) {
       zelleButton.textContent = details;
     }
@@ -71,11 +97,11 @@ const chatForm = document.getElementById('chatForm');
 const chatInput = document.getElementById('chatInput');
 
 const botReplies = {
-  service: 'Our main Sunday worship service is at 10:00 AM EAT. You can also join online through the Live section.',
-  prayer: 'You can submit a confidential prayer request using the Prayer & Counselling form. The church team will follow up with you.',
-  giving: 'You can give through PayPal, Zelle, or local giving. Please confirm official payment details with church leadership before sending funds.',
-  contact: 'You can contact Waymaker Fellowship Church on 0722481199 or email info@waymakerfellowshipchurch.org.',
-  default: 'Thank you for contacting Waymaker Fellowship Church. A team member can help with services, prayer, giving, events, and counselling. For urgent help, call 0722481199.'
+  service: 'The Way Maker Fellowship Church is a global online church. You can watch sermons and messages through YouTube @TWMFC.',
+  prayer: 'You can submit a confidential prayer request using the Prayer & Counselling form. Our intercession team stands in the gap for prayer requests.',
+  giving: 'You can support the mission through PayPal, Zelle / Bank Transfer, or Mobile Money once official details are confirmed by church leadership.',
+  contact: 'Contact TWMFC by phone at +1 551 330 6121 or email info@TWMFC.org. Address: USA.',
+  default: 'Thank you for contacting The Way Maker Fellowship Church. We can help with online service, prayer, giving, ministries, partnership, and contact information.'
 };
 
 function addChatMessage(text, sender = 'bot') {
@@ -89,10 +115,10 @@ function addChatMessage(text, sender = 'bot') {
 
 function getBotReply(text) {
   const lower = text.toLowerCase();
-  if (lower.includes('service') || lower.includes('time') || lower.includes('sunday')) return botReplies.service;
+  if (lower.includes('service') || lower.includes('online') || lower.includes('youtube') || lower.includes('sermon')) return botReplies.service;
   if (lower.includes('prayer') || lower.includes('counsel') || lower.includes('help')) return botReplies.prayer;
-  if (lower.includes('give') || lower.includes('paypal') || lower.includes('zelle') || lower.includes('offering') || lower.includes('tithe')) return botReplies.giving;
-  if (lower.includes('contact') || lower.includes('phone') || lower.includes('call') || lower.includes('location')) return botReplies.contact;
+  if (lower.includes('give') || lower.includes('paypal') || lower.includes('zelle') || lower.includes('offering') || lower.includes('tithe') || lower.includes('mpesa')) return botReplies.giving;
+  if (lower.includes('contact') || lower.includes('phone') || lower.includes('call') || lower.includes('email') || lower.includes('address')) return botReplies.contact;
   return botReplies.default;
 }
 

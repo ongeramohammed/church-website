@@ -1,5 +1,7 @@
-# Engish Church Website
+# The Way Maker Fellowship Church Website
 
-Static church website preview files.
+Static GitHub Pages website for The Way Maker Fellowship Church (TWMFC).
 
-Open `index.html` locally or publish with GitHub Pages.
+Live website: https://ongeramohammed.github.io/church-website/
+
+Includes online church sections for vision/mission/purpose, leadership, ministries, sermons, prayer requests, giving, partners, FAQ, contact details, and a live numbers infographic.
