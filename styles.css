@@ -423,7 +423,8 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
 
 @media (max-width: 640px) {
   .section { padding: 72px 16px; }
-  .hero { padding: 98px 18px 300px; min-height: 100svh; }
+  .hero { padding: 98px 18px 360px; min-height: 100svh; }
+  .welcome-strip { bottom: 84px; }
   .hero h1 { letter-spacing: -3px; font-size: clamp(64px, 18vw, 92px); }
   .hero-subtitle { font-size: 18px; }
   h1 { letter-spacing: -1.3px; }
