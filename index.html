@@ -29,31 +29,26 @@
   </header>
 
   <main>
-    <section class="hero section-dark">
-      <div class="hero-content reveal">
-        <p class="eyebrow">Welcome to Church Online</p>
-        <h1>The Way Maker Fellowship Church</h1>
-        <p class="hero-subtitle">Experience the Grace of God. Encounter Transformation. A borderless, global online community proclaiming the finished work of Jesus Christ.</p>
-        <p class="tagline">Where Faith Meets Divine Possibility.</p>
-        <div class="hero-actions">
+    <section class="hero video-welcome section-dark" aria-label="Welcome home video page">
+      <video class="hero-video" autoplay muted loop playsinline poster="assets/gallery/worship-hall.jpg">
+        <source src="assets/video/welcome-home.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-video-overlay" aria-hidden="true"></div>
+      <div class="hero-content hero-centered reveal">
+        <p class="eyebrow hero-kicker">New to The Way Maker?</p>
+        <h1>Welcome<br>Home</h1>
+        <p class="hero-subtitle">A global online church family helping people experience God’s grace, discover purpose, and make a difference through Jesus Christ.</p>
+        <div class="hero-actions hero-actions-centered">
           <a href="https://us02web.zoom.us/j/87222982259#success" class="button button-primary" target="_blank" rel="noopener">Join Us Now</a>
-          <a href="#foundation" class="button button-outline">Our Vision</a>
+          <a href="#live" class="button button-outline">Watch Online</a>
         </div>
       </div>
-      <div class="hero-card reveal delay-1" aria-label="Church live service information">
-        <div class="live-badge"><span></span> Global Online Church</div>
-        <h2>Welcome Home</h2>
-        <p class="service-time">Online • Everywhere</p>
-        <p>Join worship, teaching, prayer, Bible study, and fellowship from anywhere in the world.</p>
-        <div class="join-qr-card">
-          <img src="assets/join-us-now-zoom-qr.png" alt="QR code to join The Way Maker Fellowship Church Zoom meeting">
-          <div>
-            <strong>Scan to Join Us Now</strong>
-            <span>Opens the same Zoom meeting instantly</span>
-          </div>
-        </div>
-        <a href="https://www.youtube.com/@TWMFC" class="text-link light" target="_blank" rel="noopener">Open YouTube →</a>
+      <div class="welcome-strip" aria-label="Quick welcome actions">
+        <a href="#live"><strong>Plan Your Visit</strong><span>Join worship online from anywhere.</span></a>
+        <a href="#sermons"><strong>Recent Messages</strong><span>Watch sermons and full services.</span></a>
+        <a href="#foundation"><strong>Next Steps</strong><span>Know God, grow in grace, serve others.</span></a>
       </div>
+      <button class="video-control" id="heroVideoToggle" type="button" aria-pressed="false">Pause Video</button>
     </section>
 
     <section class="quick-links" aria-label="Quick church links">

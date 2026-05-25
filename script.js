@@ -88,6 +88,22 @@ updateLiveInfographic();
 setInterval(updateLiveInfographic, 1000);
 document.getElementById('timezoneSelect')?.addEventListener('change', updateLiveInfographic);
 
+const heroVideo = document.querySelector('.hero-video');
+const heroVideoToggle = document.getElementById('heroVideoToggle');
+if (heroVideo && heroVideoToggle) {
+  heroVideoToggle.addEventListener('click', async () => {
+    if (heroVideo.paused) {
+      try { await heroVideo.play(); } catch (error) { return; }
+      heroVideoToggle.textContent = 'Pause Video';
+      heroVideoToggle.setAttribute('aria-pressed', 'false');
+    } else {
+      heroVideo.pause();
+      heroVideoToggle.textContent = 'Play Video';
+      heroVideoToggle.setAttribute('aria-pressed', 'true');
+    }
+  });
+}
+
 document.querySelectorAll('[data-count]').forEach((el) => animateCounter(el, Number(el.dataset.count)));
 
 const zelleButton = document.querySelector('.copy-zelle');
