@@ -67,19 +67,26 @@ function updateLiveInfographic() {
   const days = Math.max(1, Math.floor((now - launchDate) / 86400000));
   const daysOnline = document.getElementById('daysOnline');
   const localTime = document.getElementById('localTime');
+  const timezoneSelect = document.getElementById('timezoneSelect');
+  const timezoneName = document.getElementById('timezoneName');
+  const selectedTimeZone = timezoneSelect?.value || 'America/New_York';
   if (daysOnline) daysOnline.textContent = days.toLocaleString();
   if (localTime) {
     localTime.textContent = now.toLocaleTimeString('en-US', {
-      timeZone: 'America/New_York',
+      timeZone: selectedTimeZone,
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit'
     });
   }
+  if (timezoneSelect && timezoneName) {
+    timezoneName.textContent = timezoneSelect.options[timezoneSelect.selectedIndex].text;
+  }
 }
 
 updateLiveInfographic();
 setInterval(updateLiveInfographic, 1000);
+document.getElementById('timezoneSelect')?.addEventListener('change', updateLiveInfographic);
 
 document.querySelectorAll('[data-count]').forEach((el) => animateCounter(el, Number(el.dataset.count)));
 

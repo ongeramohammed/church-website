@@ -99,7 +99,25 @@
       </div>
       <div class="impact-dashboard reveal" aria-label="Live church numbers infographic">
         <div class="impact-card primary"><strong id="daysOnline">0</strong><span>Days since online launch</span><small>Since August 2024</small></div>
-        <div class="impact-card time-card"><strong id="localTime">--:--</strong><span class="sr-only">Current USA time</span><small>Current USA time • updates every second</small></div>
+        <div class="impact-card time-card">
+          <strong id="localTime">--:--</strong>
+          <label for="timezoneSelect">Choose time zone</label>
+          <select id="timezoneSelect" aria-label="Choose clock time zone">
+            <option value="America/New_York" selected>USA Eastern</option>
+            <option value="America/Chicago">USA Central</option>
+            <option value="America/Denver">USA Mountain</option>
+            <option value="America/Los_Angeles">USA Pacific</option>
+            <option value="America/Anchorage">USA Alaska</option>
+            <option value="Pacific/Honolulu">USA Hawaii</option>
+            <option value="Africa/Nairobi">Kenya</option>
+            <option value="Europe/London">London</option>
+            <option value="Europe/Paris">Paris</option>
+            <option value="Asia/Dubai">Dubai</option>
+            <option value="Asia/Tokyo">Tokyo</option>
+            <option value="Australia/Sydney">Sydney</option>
+          </select>
+          <small><span id="timezoneName">USA Eastern</span> time • updates every second</small>
+        </div>
         <div class="impact-card"><strong data-count="5">0</strong><span>Core ministries</span><small>Prayer, youth, women, men, outreach</small></div>
         <div class="impact-card"><strong data-count="10">0</strong><span>Leadership & ministry team</span><small>Pastors, ministers, youth, admin, intercession</small></div>
         <div class="impact-ring" aria-hidden="true"><div><b>Grace</b><em>Global • Online • Transforming</em></div></div>
