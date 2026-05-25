@@ -361,6 +361,22 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
 }
 .impact-card span { display: block; margin-top: 14px; font-weight: 800; }
 .impact-card small { display: block; margin-top: 10px; opacity: .68; line-height: 1.35; }
+.time-card strong {
+  font-size: clamp(54px, 9vw, 86px);
+  line-height: .92;
+  letter-spacing: -3px;
+}
+.time-card span.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .impact-ring {
   display: grid;
   place-items: center;
