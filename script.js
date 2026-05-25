@@ -169,3 +169,81 @@ if (chatForm && chatInput) {
     setTimeout(() => addChatMessage(getBotReply(text)), 450);
   });
 }
+
+
+const musicToggle = document.getElementById('musicToggle');
+let ambientAudioContext;
+let ambientMaster;
+let ambientNodes = [];
+
+function stopSoftChurchMusic() {
+  ambientNodes.forEach((node) => {
+    try { node.stop?.(); } catch (error) {}
+    try { node.disconnect?.(); } catch (error) {}
+  });
+  ambientNodes = [];
+  if (ambientMaster) {
+    ambientMaster.gain.setTargetAtTime(0.0001, ambientAudioContext.currentTime, 0.8);
+  }
+  if (musicToggle) {
+    musicToggle.textContent = '♪ Play soft music';
+    musicToggle.classList.remove('is-playing');
+    musicToggle.setAttribute('aria-pressed', 'false');
+  }
+}
+
+function startSoftChurchMusic() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) {
+    if (musicToggle) musicToggle.textContent = 'Audio not supported';
+    return;
+  }
+  ambientAudioContext = ambientAudioContext || new AudioContext();
+  const ctx = ambientAudioContext;
+  if (ctx.state === 'suspended') ctx.resume();
+  ambientMaster = ctx.createGain();
+  ambientMaster.gain.setValueAtTime(0.0001, ctx.currentTime);
+  ambientMaster.gain.exponentialRampToValueAtTime(0.045, ctx.currentTime + 1.6);
+  ambientMaster.connect(ctx.destination);
+
+  const chords = [[261.63, 329.63, 392.0], [220.0, 261.63, 349.23], [196.0, 246.94, 329.63], [174.61, 220.0, 261.63]];
+  let chordIndex = 0;
+
+  function playChord() {
+    if (!ambientMaster) return;
+    const start = ctx.currentTime;
+    chords[chordIndex % chords.length].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      osc.type = i === 1 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(freq, start);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(900, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.18, start + 1.4);
+      gain.gain.setTargetAtTime(0.0001, start + 5.4, 1.1);
+      osc.connect(filter).connect(gain).connect(ambientMaster);
+      osc.start(start);
+      osc.stop(start + 8);
+      ambientNodes.push(osc, gain, filter);
+    });
+    chordIndex += 1;
+  }
+
+  playChord();
+  const interval = setInterval(playChord, 6200);
+  ambientNodes.push({ stop: () => clearInterval(interval), disconnect: () => {} });
+  if (musicToggle) {
+    musicToggle.textContent = '❚❚ Pause soft music';
+    musicToggle.classList.add('is-playing');
+    musicToggle.setAttribute('aria-pressed', 'true');
+  }
+}
+
+if (musicToggle) {
+  musicToggle.addEventListener('click', () => {
+    if (musicToggle.getAttribute('aria-pressed') === 'true') stopSoftChurchMusic();
+    else startSoftChurchMusic();
+  });
+}
