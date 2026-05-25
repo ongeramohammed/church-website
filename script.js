@@ -68,7 +68,15 @@ function updateLiveInfographic() {
   const daysOnline = document.getElementById('daysOnline');
   const localTime = document.getElementById('localTime');
   if (daysOnline) daysOnline.textContent = days.toLocaleString();
-  if (localTime) localTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  if (localTime) {
+    localTime.textContent = now.toLocaleTimeString('en-US', {
+      timeZone: 'America/New_York',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short'
+    });
+  }
 }
 
 updateLiveInfographic();
