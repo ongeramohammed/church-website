@@ -88,8 +88,10 @@ p { font-size: 17px; line-height: 1.55; color: inherit; opacity: .82; }
 }
 .button:hover { transform: translateY(-2px); }
 .button-primary { background: linear-gradient(135deg, var(--green), var(--blue)); color: white; }
+.button-gold { background: linear-gradient(135deg, var(--gold), #f1b44c); color: var(--near-black); font-weight: 800; }
 .button-outline { border-color: rgba(255,255,255,.72); color: white; }
 .button-dark { background: var(--near-black); color: white; }
+.service-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
 .payment-button { margin-top: 18px; width: fit-content; }
 .text-link { color: var(--link-blue); font-weight: 600; }
 .text-link.light { color: var(--bright-blue); }
