@@ -109,6 +109,39 @@ p { font-size: 17px; line-height: 1.55; color: inherit; opacity: .82; }
 .live-badge { display: inline-flex; align-items: center; gap: 10px; color: var(--bright-blue); font-weight: 700; margin-bottom: 28px; }
 .live-badge span { width: 10px; height: 10px; background: #29d47f; border-radius: 50%; box-shadow: 0 0 18px #29d47f; }
 .service-time { font-size: 28px; font-weight: 700; opacity: 1; }
+.join-qr-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin: 22px 0;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+}
+.join-qr-card img,
+.service-qr-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 14px;
+  background: white;
+  padding: 8px;
+}
+.join-qr-card strong,
+.service-qr-card strong {
+  display: block;
+  font-size: 17px;
+  line-height: 1.2;
+}
+.join-qr-card span {
+  display: block;
+  margin-top: 6px;
+  color: rgba(255,255,255,.78);
+  font-size: 14px;
+  line-height: 1.35;
+}
 
 .quick-links {
   display: grid;
@@ -126,6 +159,19 @@ p { font-size: 17px; line-height: 1.55; color: inherit; opacity: .82; }
 .check-list { padding: 0; margin: 24px 0; list-style: none; }
 .check-list li { padding: 11px 0; border-bottom: 1px solid rgba(0,0,0,.08); }
 .check-list li::before { content: "✓"; color: var(--blue); font-weight: 800; margin-right: 10px; }
+.service-qr-card {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 14px;
+  border-radius: 18px;
+  background: white;
+  border: 1px solid rgba(183,121,31,.18);
+  box-shadow: rgba(76, 37, 7, 0.08) 0 14px 28px;
+}
+.service-qr-card p { margin: 0; font-size: 15px; line-height: 1.4; opacity: .86; }
 
 .cards-grid, .sermon-grid, .giving-cards {
   max-width: 1180px;
@@ -220,6 +266,7 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   .nav-links.open { display: flex; }
   .hero, .live-grid, .split-section { grid-template-columns: 1fr; }
   .quick-links, .cards-grid, .sermon-grid, .giving-cards, .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  .join-qr-card { max-width: 520px; }
 }
 
 @media (max-width: 640px) {
@@ -227,6 +274,10 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   .hero { padding: 100px 18px 62px; }
   h1 { letter-spacing: -1.3px; }
   .quick-links, .cards-grid, .sermon-grid, .giving-cards, .ministry-list, .contact-grid { grid-template-columns: 1fr; }
+  .join-qr-card,
+  .service-qr-card { grid-template-columns: 1fr; text-align: center; }
+  .join-qr-card img,
+  .service-qr-card img { max-width: 190px; margin: auto; }
   .event { grid-template-columns: 1fr; }
   .footer { flex-direction: column; }
 }
