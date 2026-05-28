@@ -116,18 +116,19 @@ if (heroVideo && heroVideoToggle) {
 
 document.querySelectorAll('[data-count]').forEach((el) => animateCounter(el, Number(el.dataset.count)));
 
-const zelleButton = document.querySelector('.copy-zelle');
-if (zelleButton) {
-  zelleButton.addEventListener('click', async () => {
-    const details = zelleButton.dataset.zelle;
+document.querySelectorAll('.copy-payment').forEach((paymentButton) => {
+  paymentButton.addEventListener('click', async () => {
+    const details = paymentButton.dataset.copy;
+    const originalText = paymentButton.textContent;
     try {
       await navigator.clipboard.writeText(details);
-      zelleButton.textContent = 'Giving note copied';
+      paymentButton.textContent = 'Copied';
+      setTimeout(() => { paymentButton.textContent = originalText; }, 1800);
     } catch (error) {
-      zelleButton.textContent = details;
+      paymentButton.textContent = details;
     }
   });
-}
+});
 
 const chatbotToggle = document.querySelector('.chatbot-toggle');
 const chatbotPanel = document.querySelector('.chatbot-panel');
@@ -139,7 +140,7 @@ const chatInput = document.getElementById('chatInput');
 const botReplies = {
   service: 'The Way Maker Fellowship Church is a global online church. You can watch sermons and messages through YouTube @TWMFC.',
   prayer: 'You can submit a confidential prayer request using the Prayer & Counselling form. Our intercession team stands in the gap for prayer requests.',
-  giving: 'You can support the mission through PayPal, Zelle / Bank Transfer, or Mobile Money once official details are confirmed by church leadership.',
+  giving: 'You can support the mission through PayPal, Zelle 551 330 6121, or M-Pesa Pay Bill 222111, Account 034000005078.',
   contact: 'Contact TWMFC by phone at +1 551 330 6121 or email info@TWMFC.org. Address: USA.',
   default: 'Thank you for contacting The Way Maker Fellowship Church. We can help with online service, prayer, giving, ministries, partnership, and contact information.'
 };
