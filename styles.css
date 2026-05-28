@@ -261,12 +261,47 @@ p { font-size: 17px; line-height: 1.6; color: inherit; opacity: .92; }
 
 .quick-links {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 2px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
   background: #d7ecf8;
 }
 .quick-links a { background: var(--light); padding: 24px; text-align: center; font-weight: 700; }
 .quick-links a:hover { color: var(--green); }
+
+.service-details-section { background: linear-gradient(180deg, #ffffff 0%, #e8f7ff 100%); }
+.service-details-grid {
+  max-width: 1180px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: .9fr .9fr 1.1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.service-details-card,
+.service-flyer-card {
+  background: #fffdf6;
+  border: 1px solid rgba(7, 89, 133, .12);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: rgba(7, 48, 71, 0.10) 0 18px 42px;
+}
+.service-details-card { display: grid; align-content: center; gap: 12px; }
+.service-details-card span {
+  color: var(--link-blue);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 14px;
+}
+.service-details-card h3 { color: var(--near-black); font-size: clamp(25px, 2.5vw, 34px); margin: 0; }
+.service-details-card strong { color: #b77900; font-size: 22px; }
+.service-flyer-card { display: grid; justify-items: center; gap: 18px; }
+.service-flyer-card img {
+  width: min(100%, 350px);
+  border-radius: 14px;
+  box-shadow: rgba(7, 48, 71, .22) 0 18px 38px;
+}
+.service-flyer-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%; }
 
 .live-grid, .split-section, .contact-grid { max-width: 1180px; margin: auto; display: grid; grid-template-columns: 1.4fr .6fr; gap: 28px; align-items: stretch; }
 .video-frame { background: var(--black); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16/9; }
@@ -450,7 +485,7 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   }
   .nav-links a { width: 100%; padding: 8px 0; }
   .nav-links.open { display: flex; }
-  .hero, .live-grid, .split-section { grid-template-columns: 1fr; }
+  .hero, .live-grid, .split-section, .service-details-grid { grid-template-columns: 1fr; }
   .welcome-strip { grid-template-columns: 1fr; bottom: 18px; width: min(520px, calc(100% - 28px)); }
   .welcome-strip a { padding: 14px 18px; border-right: 0; border-bottom: 1px solid rgba(7,81,120,.1); }
   .welcome-strip a:last-child { border-bottom: 0; }
@@ -490,6 +525,8 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   h1 { letter-spacing: -1.3px; }
   .quick-links, .cards-grid, .sermon-grid, .giving-cards, .ministry-list, .contact-grid, .gallery-grid { grid-template-columns: 1fr; }
   .quick-links a { padding: 18px 16px; }
+  .service-details-card, .service-flyer-card { padding: 22px; }
+  .service-flyer-actions .button { width: 100%; }
   .gallery-grid figure, .gallery-grid .gallery-feature { min-height: 235px; }
   .gallery-grid figcaption { border-radius: 14px; }
   .music-panel, .church-form, .service-panel, .program-card, .sermon-card, .give-card, .leader-card { padding: 22px; }
