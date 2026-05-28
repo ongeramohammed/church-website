@@ -1145,3 +1145,44 @@ body {
   .welcome-strip a { padding: 13px 16px; }
   .chatbot-widget { top: 72px; bottom: auto; }
 }
+
+/* Fix Foundation section visibility: bright, high-contrast text on dark worship background */
+#foundation.programs-section {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(255, 209, 102, .34), transparent 34%),
+    linear-gradient(135deg, #062f46 0%, #0b5564 58%, #9a7105 100%);
+}
+#foundation .section-heading .eyebrow,
+#foundation .eyebrow {
+  color: #ffd166 !important;
+  text-shadow: 0 2px 14px rgba(0,0,0,.48);
+}
+#foundation .section-heading h2 {
+  color: #ffffff !important;
+  text-shadow: 0 3px 24px rgba(0,0,0,.55);
+}
+#foundation .section-heading p {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  font-weight: 650;
+  text-shadow: 0 2px 16px rgba(0,0,0,.58);
+}
+#foundation .program-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,250,235,.95));
+  color: #102a43;
+  border: 1px solid rgba(255, 209, 102, .45);
+  box-shadow: rgba(0,0,0,.22) 0 22px 54px;
+}
+#foundation .program-card span {
+  color: #8a5b00 !important;
+  font-weight: 950;
+}
+#foundation .program-card h3 {
+  color: #073047 !important;
+  font-weight: 950;
+}
+#foundation .program-card p {
+  color: #102a43 !important;
+  opacity: 1 !important;
+  font-weight: 560;
+}
