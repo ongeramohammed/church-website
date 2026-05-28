@@ -842,27 +842,27 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
 }
 .contact-method-card:hover { transform: translateY(-4px); box-shadow: rgba(7, 48, 71, 0.14) 0 24px 52px; }
 .contact-icon {
-  width: 62px;
-  height: 62px;
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
   display: inline-grid;
   place-items: center;
   color: white !important;
-  font-size: 31px !important;
+  font-size: 25px !important;
   font-weight: 900;
   line-height: 1;
   opacity: 1 !important;
-  border: 3px solid rgba(255, 255, 255, .86);
-  outline: 3px solid rgba(255, 209, 102, .26);
-  text-shadow: 0 2px 7px rgba(7, 48, 71, .28);
-  box-shadow: rgba(7, 48, 71, 0.22) 0 14px 30px, inset 0 1px 0 rgba(255,255,255,.38);
+  border: 2px solid rgba(255, 255, 255, .86);
+  outline: 2px solid rgba(255, 209, 102, .24);
+  text-shadow: 0 2px 6px rgba(7, 48, 71, .26);
+  box-shadow: rgba(7, 48, 71, 0.18) 0 10px 22px, inset 0 1px 0 rgba(255,255,255,.34);
 }
 .icon-address { background: linear-gradient(135deg, #e8f7ff 0%, #0b6fa4 48%, #1f8a5b 100%); }
 .icon-phone { background: linear-gradient(135deg, #dcfce7 0%, #1f8a5b 48%, #0f4c5c 100%); }
-.icon-email { background: linear-gradient(135deg, #fff4cf 0%, #0b6fa4 45%, #075985 100%); font-family: Arial, sans-serif; font-size: 27px !important; letter-spacing: -2px; }
+.icon-email { background: linear-gradient(135deg, #fff4cf 0%, #0b6fa4 45%, #075985 100%); font-family: Arial, sans-serif; font-size: 22px !important; letter-spacing: -2px; }
 .icon-youtube { background: linear-gradient(135deg, #fff1f2 0%, #ff0000 48%, #991b1b 100%); }
 .icon-instagram { background: linear-gradient(135deg, #fef3c7 0%, #833ab4 30%, #fd1d1d 66%, #fcb045 100%); }
-.icon-facebook { background: linear-gradient(135deg, #dbeafe 0%, #1877f2 48%, #0b5ed7 100%); font-family: Arial, sans-serif; font-size: 34px !important; }
+.icon-facebook { background: linear-gradient(135deg, #dbeafe 0%, #1877f2 48%, #0b5ed7 100%); font-family: Arial, sans-serif; font-size: 28px !important; }
 .contact-method-card strong { font-size: 22px; }
 .contact-method-card p { margin: 0; }
 .contact-method-card em { color: var(--link-blue); font-style: normal; font-weight: 900; }
