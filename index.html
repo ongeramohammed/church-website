@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="The Way Maker Fellowship Church is a borderless global online church proclaiming the finished work of Jesus Christ and the Grace of God." />
+  <meta name="theme-color" content="#075178" />
   <title>The Way Maker Fellowship Church</title>
-  <link rel="preload" href="assets/audio/soft-worship-pad.mp3" as="audio" type="audio/mpeg" />
+  <link rel="preload" href="assets/gallery/worship-hall.jpg" as="image" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -30,7 +31,7 @@
 
   <main>
     <section class="hero video-welcome section-dark" aria-label="Welcome home video page">
-      <video class="hero-video" autoplay muted loop playsinline poster="assets/gallery/worship-hall.jpg">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/gallery/worship-hall.jpg">
         <source src="assets/video/welcome-home.mp4" type="video/mp4" />
       </video>
       <div class="hero-video-overlay" aria-hidden="true"></div>
@@ -70,6 +71,7 @@
           <iframe
             src="https://www.youtube.com/embed/videoseries?list=UUACcLTD_iEvstI7BTqAaKKQ"
             title="The Way Maker Fellowship Church YouTube videos"
+            loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
@@ -88,7 +90,7 @@
             <a class="button button-dark" href="#prayer">Send prayer request</a>
           </div>
           <div class="service-qr-card">
-            <img src="assets/join-us-now-zoom-qr.png" alt="Scan this QR code to join the Zoom meeting">
+            <img src="assets/join-us-now-zoom-qr.png" alt="Scan this QR code to join the Zoom meeting" loading="lazy" decoding="async">
             <p><strong>Scan QR code to Join Us Now</strong></p>
           </div>
         </aside>
@@ -195,12 +197,12 @@
         <p>Enjoy a peaceful visual space with church backgrounds, worship moments, prayer, the Word, and global fellowship inspiration.</p>
       </div>
       <div class="gallery-grid reveal" aria-label="Church photo gallery">
-        <figure class="gallery-feature"><img src="assets/gallery/worship-hall.jpg" alt="Beautiful church sanctuary with stained glass windows"><figcaption>Peaceful worship sanctuary</figcaption></figure>
-        <figure><img src="assets/gallery/church-sanctuary.jpg" alt="Church worship crowd lifting hands to Jesus"><figcaption>Worship together</figcaption></figure>
-        <figure><img src="assets/gallery/church-window.jpg" alt="Open Bible during church teaching"><figcaption>Teaching the Word</figcaption></figure>
-        <figure><img src="assets/gallery/cross-light.jpg" alt="Person praying with Bible in church"><figcaption>Prayer and devotion</figcaption></figure>
-        <figure><img src="assets/gallery/church-community.jpg" alt="Small group standing together in fellowship"><figcaption>Global fellowship</figcaption></figure>
-        <figure><img src="assets/gallery/prayer-bible.jpg" alt="Cross silhouette at sunset symbolizing hope"><figcaption>Hope in Christ</figcaption></figure>
+        <figure class="gallery-feature"><img src="assets/gallery/worship-hall.jpg" alt="Beautiful church sanctuary with stained glass windows" loading="lazy" decoding="async"><figcaption>Peaceful worship sanctuary</figcaption></figure>
+        <figure><img src="assets/gallery/church-sanctuary.jpg" alt="Church worship crowd lifting hands to Jesus" loading="lazy" decoding="async"><figcaption>Worship together</figcaption></figure>
+        <figure><img src="assets/gallery/church-window.jpg" alt="Open Bible during church teaching" loading="lazy" decoding="async"><figcaption>Teaching the Word</figcaption></figure>
+        <figure><img src="assets/gallery/cross-light.jpg" alt="Person praying with Bible in church" loading="lazy" decoding="async"><figcaption>Prayer and devotion</figcaption></figure>
+        <figure><img src="assets/gallery/church-community.jpg" alt="Small group standing together in fellowship" loading="lazy" decoding="async"><figcaption>Global fellowship</figcaption></figure>
+        <figure><img src="assets/gallery/prayer-bible.jpg" alt="Cross silhouette at sunset symbolizing hope" loading="lazy" decoding="async"><figcaption>Hope in Christ</figcaption></figure>
       </div>
       <div class="music-panel reveal" aria-label="Soothing soft church music player">
         <div>
@@ -209,7 +211,7 @@
           <p>Tap play to hear a gentle ambient worship pad while browsing the site. It stays soft and peaceful.</p>
         </div>
         <button id="musicToggle" class="button button-primary music-button" type="button" aria-pressed="false">♪ Play soft music</button>
-        <audio id="softMusicAudio" src="assets/audio/soft-worship-pad.mp3" preload="auto" loop></audio>
+        <audio id="softMusicAudio" src="assets/audio/soft-worship-pad.mp3" preload="none" loop></audio>
       </div>
     </section>
 

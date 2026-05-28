@@ -1,53 +1,63 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 
-menuToggle.addEventListener('click', () => {
-  const isOpen = navLinks.classList.toggle('open');
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
-  menuToggle.textContent = isOpen ? '×' : '☰';
-});
+if (menuToggle && navLinks) {
+  menuToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.textContent = isOpen ? '×' : '☰';
+  });
+}
 
 document.querySelectorAll('.nav-links a').forEach((link) => {
   link.addEventListener('click', () => {
+    if (!navLinks || !menuToggle) return;
     navLinks.classList.remove('open');
     menuToggle.setAttribute('aria-expanded', 'false');
     menuToggle.textContent = '☰';
   });
 });
 
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
 
-document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+}
 
 const prayerForm = document.getElementById('prayerForm');
 const formStatus = document.getElementById('formStatus');
 
-prayerForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const contact = document.getElementById('contactInfo').value.trim();
-  const type = document.getElementById('requestType').value;
-  const message = document.getElementById('message').value.trim();
+if (prayerForm && formStatus) {
+  prayerForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const contact = document.getElementById('contactInfo').value.trim();
+    const type = document.getElementById('requestType').value;
+    const message = document.getElementById('message').value.trim();
 
-  const subject = encodeURIComponent(`${type} from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nContact: ${contact}\nType: ${type}\n\nMessage:\n${message}`);
+    const subject = encodeURIComponent(`${type} from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nContact: ${contact}\nType: ${type}\n\nMessage:\n${message}`);
 
-  formStatus.textContent = 'Opening your email app...';
-  window.location.href = `mailto:info@TWMFC.org?subject=${subject}&body=${body}`;
+    formStatus.textContent = 'Opening your email app...';
+    window.location.href = `mailto:info@TWMFC.org?subject=${subject}&body=${body}`;
 
-  setTimeout(() => {
-    formStatus.textContent = 'If email did not open, copy the message and send it to info@TWMFC.org or call +1 551 330 6121.';
-  }, 1500);
-});
+    setTimeout(() => {
+      formStatus.textContent = 'If email did not open, copy the message and send it to info@TWMFC.org or call +1 551 330 6121.';
+    }, 1500);
+  });
+}
 
 function animateCounter(el, target, duration = 1400) {
   let start = 0;
@@ -190,7 +200,7 @@ if (chatForm && chatInput) {
 const musicToggle = document.getElementById('musicToggle');
 const softMusic = document.getElementById('softMusicAudio') || new Audio('assets/audio/soft-worship-pad.mp3');
 softMusic.loop = true;
-softMusic.preload = 'auto';
+softMusic.preload = 'none';
 softMusic.volume = 0.72;
 
 function setMusicButtonPlaying(isPlaying) {
@@ -209,6 +219,7 @@ async function startSoftChurchMusic() {
   if (!musicToggle) return;
   try {
     musicToggle.textContent = 'Loading music...';
+    softMusic.preload = 'auto';
     softMusic.muted = false;
     softMusic.volume = 0.72;
     await softMusic.play();
