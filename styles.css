@@ -1378,3 +1378,72 @@ img, video, iframe, svg { max-width: 100%; height: auto; }
 @supports not (overflow-x: clip) {
   html, body { overflow-x: hidden; }
 }
+
+
+/* Direct request form, WhatsApp action, and website inbox */
+.form-helper {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #e8f7ff;
+  color: #073047;
+  font-weight: 750;
+  line-height: 1.45;
+}
+.request-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.button-whatsapp {
+  background: linear-gradient(135deg, #16a34a, #128c7e);
+  color: #fff;
+  box-shadow: rgba(18, 140, 126, .28) 0 14px 30px;
+}
+button[disabled] { opacity: .68; cursor: wait; }
+.admin-inbox-section { padding-top: 118px; }
+.admin-panel {
+  max-width: 760px;
+  margin: 0 auto 26px;
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  border-radius: 24px;
+  background: #fffdf6;
+  border: 1px solid rgba(7,89,133,.14);
+  box-shadow: rgba(7,48,71,.10) 0 18px 42px;
+}
+.admin-panel label { display: grid; gap: 8px; font-weight: 800; }
+.admin-table-wrap {
+  max-width: 1180px;
+  margin: auto;
+  overflow-x: auto;
+  border-radius: 24px;
+  background: white;
+  box-shadow: rgba(7,48,71,.10) 0 18px 42px;
+}
+.admin-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  color: #102a43;
+}
+.admin-table th, .admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(7,89,133,.12);
+  text-align: left;
+  vertical-align: top;
+}
+.admin-table th { background: #e8f7ff; color: #073047; font-weight: 950; }
+.admin-help {
+  max-width: 900px;
+  margin: 28px auto 0;
+  padding: 22px;
+  border-radius: 22px;
+  background: #fff4cf;
+  color: #102a43;
+}
+@media (max-width: 640px) {
+  .request-actions { grid-template-columns: 1fr; }
+  .admin-inbox-section { padding-top: 92px; }
+}

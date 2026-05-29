@@ -329,12 +329,16 @@
         <h2>Send a confidential prayer request</h2>
         <p>Our intercession ministry stands in the gap for prayer requests, believing God for healing, restoration, and breakthrough.</p>
       </div>
-      <form id="prayerForm" class="church-form reveal">
-        <label>Name<input type="text" id="name" placeholder="Your name" required></label>
-        <label>Phone or email<input type="text" id="contactInfo" placeholder="Phone / email" required></label>
-        <label>Request type<select id="requestType"><option>Prayer request</option><option>Counselling</option><option>Thanksgiving testimony</option><option>Join a ministry</option></select></label>
-        <label>Message<textarea id="message" rows="5" placeholder="Write your request here" required></textarea></label>
-        <button type="submit" class="button button-primary">Send Request</button>
+      <form id="prayerForm" class="church-form reveal request-form" data-form-name="Prayer request">
+        <p class="form-helper">This sends directly to the church email. After Google Sheets is connected, it will also save in the website inbox.</p>
+        <label>Name<input type="text" id="name" name="name" placeholder="Your name" required></label>
+        <label>Phone or email<input type="text" id="contactInfo" name="contact" placeholder="Phone / email" required></label>
+        <label>Request type<select id="requestType" name="type"><option>Prayer request</option><option>Counselling</option><option>Thanksgiving testimony</option><option>Join a ministry</option></select></label>
+        <label>Message<textarea id="message" name="message" rows="5" placeholder="Write your request here" required></textarea></label>
+        <div class="request-actions">
+          <button type="submit" class="button button-primary">Send Directly</button>
+          <a class="button button-whatsapp whatsapp-request" href="https://wa.me/15513306121" target="_blank" rel="noopener">Send by WhatsApp</a>
+        </div>
         <p id="formStatus" class="form-status" role="status"></p>
       </form>
     </section>
@@ -409,6 +413,7 @@
     <a href="#top">Back to top ↑</a>
   </footer>
 
+  <script src="request-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

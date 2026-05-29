@@ -1,0 +1,77 @@
+/*
+The Way Maker Fellowship Church request backend for Google Sheets + email + website inbox.
+
+Setup:
+1. Go to https://script.google.com while logged into the Google account that should own the request sheet.
+2. New project -> paste this whole script.
+3. Change ADMIN_PIN below to a private PIN.
+4. Run setup() once and approve permissions.
+5. Deploy -> New deployment -> Web app.
+   Execute as: Me
+   Who has access: Anyone
+6. Copy the Web App URL and paste it into request-config.js as googleSheetsWebAppUrl.
+
+Requests will be emailed to info@TWMFC.org and saved in the Google Sheet.
+Open admin.html on the website, enter the same PIN, and read the saved requests.
+*/
+
+const ADMIN_PIN = 'CHANGE_THIS_PIN';
+const TO_EMAIL = 'info@TWMFC.org';
+const SHEET_NAME = 'TWMFC Requests';
+const HEADERS = ['Timestamp','Name','Contact','Type','Message','Page','Source'];
+
+function setup() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.create(SHEET_NAME);
+  const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
+  sheet.setFrozenRows(1);
+  return ss.getUrl();
+}
+
+function getSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
+  return sheet;
+}
+
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents || '{}');
+  const sheet = getSheet_();
+  const timestamp = new Date();
+  const row = [
+    timestamp,
+    data.name || '',
+    data.contact || '',
+    data.type || '',
+    data.message || '',
+    data.page || '',
+    data.source || 'website'
+  ];
+  sheet.appendRow(row);
+  MailApp.sendEmail({
+    to: TO_EMAIL,
+    subject: `${data.type || 'Website request'} from ${data.name || 'Website visitor'}`,
+    body: `New TWMFC website request
+
+Name: ${data.name || ''}
+Contact: ${data.contact || ''}
+Type: ${data.type || ''}
+Page: ${data.page || ''}
+
+Message:
+${data.message || ''}`
+  });
+  return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  if ((e.parameter.pin || '') !== ADMIN_PIN) {
+    return ContentService.createTextOutput(JSON.stringify({ok:false, error:'Wrong PIN'})).setMimeType(ContentService.MimeType.JSON);
+  }
+  const rows = getSheet_().getDataRange().getValues();
+  const data = rows.slice(1).reverse().map(r => ({
+    timestamp: r[0], name: r[1], contact: r[2], type: r[3], message: r[4], page: r[5], source: r[6]
+  }));
+  return ContentService.createTextOutput(JSON.stringify({ok:true, requests:data})).setMimeType(ContentService.MimeType.JSON);
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <title>TWMFC Website Inbox</title>
+  <link rel="icon" type="image/png" href="assets/twmfc-logo-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-page">
+  <header class="site-header" id="top">
+    <nav class="nav" aria-label="Admin navigation">
+      <a href="index.html" class="brand" aria-label="Back to The Way Maker Fellowship Church home">
+        <img class="brand-logo" src="assets/twmfc-logo-192.png" alt="The Waymaker Fellowship Church logo" width="44" height="44" />
+        <span class="brand-name">TWMFC Website Inbox</span>
+      </a>
+      <a href="index.html" class="nav-cta">Back to Site</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section section-light admin-inbox-section">
+      <div class="section-heading">
+        <p class="eyebrow blue">Private Requests</p>
+        <h1>Website inbox</h1>
+        <p>After the Google Sheets backend is connected, enter your private PIN to read saved prayer and contact requests. Until then, this page only shows backup copies submitted from this same browser.</p>
+      </div>
+      <div class="admin-panel">
+        <label>Inbox PIN<input id="adminPin" type="password" placeholder="Enter Google Apps Script PIN"></label>
+        <button id="loadRequests" class="button button-primary" type="button">Load Requests</button>
+        <p id="adminStatus" class="form-status" role="status"></p>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Type</th><th>Message</th><th>Source</th></tr></thead>
+          <tbody id="requestsBody"><tr><td colspan="6">No requests loaded yet.</td></tr></tbody>
+        </table>
+      </div>
+      <div class="admin-help">
+        <h2>Setup needed for full inbox</h2>
+        <p>Use the included file <strong>google-sheets-request-backend-template.txt</strong> to create a Google Apps Script backend. Paste the deployed Web App URL into <strong>request-config.js</strong>. Then this page will read the Google Sheet.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="request-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

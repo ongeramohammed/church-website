@@ -36,28 +36,113 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
 }
 
-const prayerForm = document.getElementById('prayerForm');
-const formStatus = document.getElementById('formStatus');
+const requestForms = document.querySelectorAll('.request-form, #prayerForm');
+const requestConfig = window.TWMFC_REQUEST_CONFIG || {};
+const requestStoreKey = 'twmfcRequestCopies';
 
-if (prayerForm && formStatus) {
-  prayerForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const contact = document.getElementById('contactInfo').value.trim();
-    const type = document.getElementById('requestType').value;
-    const message = document.getElementById('message').value.trim();
-
-    const subject = encodeURIComponent(`${type} from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nContact: ${contact}\nType: ${type}\n\nMessage:\n${message}`);
-
-    formStatus.textContent = 'Opening your email app...';
-    window.location.href = `mailto:info@TWMFC.org?subject=${subject}&body=${body}`;
-
-    setTimeout(() => {
-      formStatus.textContent = 'If email did not open, copy the message and send it to info@TWMFC.org or call +1 551 330 6121.';
-    }, 1500);
-  });
+function getRequestFormData(form) {
+  const name = form.querySelector('[name="name"], #name')?.value.trim() || '';
+  const contact = form.querySelector('[name="contact"], #contactInfo')?.value.trim() || '';
+  const type = form.querySelector('[name="type"], #requestType')?.value || form.dataset.formName || 'Website request';
+  const message = form.querySelector('[name="message"], #message')?.value.trim() || '';
+  return {
+    name,
+    contact,
+    type,
+    message,
+    page: window.location.pathname.split('/').pop() || 'index.html',
+    source: 'TWMFC website',
+    timestamp: new Date().toISOString()
+  };
 }
+
+function saveLocalRequestCopy(data) {
+  try {
+    const existing = JSON.parse(localStorage.getItem(requestStoreKey) || '[]');
+    existing.unshift(data);
+    localStorage.setItem(requestStoreKey, JSON.stringify(existing.slice(0, 100)));
+  } catch (error) {
+    // Local browser storage is only a backup copy; ignore if blocked.
+  }
+}
+
+function updateWhatsAppLink(form) {
+  const link = form.querySelector('.whatsapp-request');
+  if (!link) return;
+  const data = getRequestFormData(form);
+  const number = requestConfig.whatsappNumber || '15513306121';
+  const text = encodeURIComponent(`TWMFC ${data.type}\n\nName: ${data.name}\nContact: ${data.contact}\n\nMessage:\n${data.message}`);
+  link.href = `https://wa.me/${number}?text=${text}`;
+}
+
+async function sendToFormService(data) {
+  const endpoint = requestConfig.formServiceEndpoint || (requestConfig.churchEmail ? `https://formsubmit.co/ajax/${requestConfig.churchEmail}` : '');
+  if (!endpoint) return false;
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      _subject: `${data.type} from ${data.name}`,
+      _template: 'table',
+      _captcha: 'false',
+      name: data.name,
+      contact: data.contact,
+      request_type: data.type,
+      message: data.message,
+      page: data.page,
+      timestamp: data.timestamp
+    })
+  });
+  return response.ok;
+}
+
+async function sendToGoogleSheets(data) {
+  const url = requestConfig.googleSheetsWebAppUrl;
+  if (!url) return false;
+  await fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+  // no-cors responses are opaque, so reaching here means the browser accepted the request.
+  return true;
+}
+
+requestForms.forEach((form) => {
+  const formStatus = form.querySelector('.form-status, #formStatus');
+  ['input', 'change'].forEach((eventName) => form.addEventListener(eventName, () => updateWhatsAppLink(form)));
+  updateWhatsAppLink(form);
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = getRequestFormData(form);
+    if (!data.name || !data.contact || !data.message) {
+      if (formStatus) formStatus.textContent = 'Please fill in your name, contact, and message.';
+      return;
+    }
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    if (formStatus) formStatus.textContent = 'Sending request directly...';
+    saveLocalRequestCopy(data);
+
+    const results = [];
+    try { results.push(await sendToFormService(data)); } catch (error) { results.push(false); }
+    try { results.push(await sendToGoogleSheets(data)); } catch (error) { results.push(false); }
+
+    if (results.some(Boolean)) {
+      if (formStatus) formStatus.textContent = requestConfig.googleSheetsWebAppUrl
+        ? 'Request sent. It has also been saved for the church inbox.'
+        : 'Request sent directly to info@TWMFC.org. First-time FormSubmit use may require email confirmation.';
+      form.reset();
+      updateWhatsAppLink(form);
+    } else {
+      if (formStatus) formStatus.textContent = 'Direct sending failed. Please use the WhatsApp button or email info@TWMFC.org.';
+    }
+    if (submitButton) submitButton.disabled = false;
+  });
+});
 
 function animateCounter(el, target, duration = 1400) {
   let start = 0;

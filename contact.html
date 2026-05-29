@@ -131,14 +131,18 @@
       <div class="section-heading reveal">
         <p class="eyebrow blue">Prayer & Counselling</p>
         <h2>Send a message directly</h2>
-        <p>Fill this form and your phone or computer will open your email app with the message ready to send.</p>
+        <p>Fill this form to send directly to the church email. You can also send the same request by WhatsApp.</p>
       </div>
-      <form id="prayerForm" class="church-form reveal">
-        <label>Name<input type="text" id="name" placeholder="Your name" required></label>
-        <label>Phone or email<input type="text" id="contactInfo" placeholder="Phone / email" required></label>
-        <label>Request type<select id="requestType"><option>Prayer request</option><option>Counselling</option><option>Thanksgiving testimony</option><option>Join a ministry</option><option>General inquiry</option></select></label>
-        <label>Message<textarea id="message" rows="5" placeholder="Write your message here" required></textarea></label>
-        <button type="submit" class="button button-primary">Send Message</button>
+      <form id="prayerForm" class="church-form reveal request-form" data-form-name="Contact message">
+        <p class="form-helper">This sends directly to the church email. After Google Sheets is connected, it will also save in the website inbox.</p>
+        <label>Name<input type="text" id="name" name="name" placeholder="Your name" required></label>
+        <label>Phone or email<input type="text" id="contactInfo" name="contact" placeholder="Phone / email" required></label>
+        <label>Request type<select id="requestType" name="type"><option>Prayer request</option><option>Counselling</option><option>Thanksgiving testimony</option><option>Join a ministry</option><option>General inquiry</option></select></label>
+        <label>Message<textarea id="message" name="message" rows="5" placeholder="Write your message here" required></textarea></label>
+        <div class="request-actions">
+          <button type="submit" class="button button-primary">Send Directly</button>
+          <a class="button button-whatsapp whatsapp-request" href="https://wa.me/15513306121" target="_blank" rel="noopener">Send by WhatsApp</a>
+        </div>
         <p id="formStatus" class="form-status" role="status"></p>
       </form>
     </section>
@@ -176,6 +180,7 @@
     <a href="index.html#top">Back to home ↑</a>
   </footer>
 
+  <script src="request-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
