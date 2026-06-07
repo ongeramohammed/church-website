@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://waymaker-church.org/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://waymaker-church.org/online-service.html</loc><priority>0.95</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://waymaker-church.org/prayer-request.html</loc><priority>0.95</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://waymaker-church.org/sermons.html</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://waymaker-church.org/giving.html</loc><priority>0.85</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://waymaker-church.org/about.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://waymaker-church.org/contact.html</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+</urlset>

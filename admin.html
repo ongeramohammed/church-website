@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex" />
   <title>TWMFC Website Inbox</title>
   <link rel="icon" type="image/png" href="assets/twmfc-logo-192.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=sheets-20260604d" />
 </head>
 <body class="admin-page">
   <header class="site-header" id="top">
@@ -24,10 +24,10 @@
       <div class="section-heading">
         <p class="eyebrow blue">Private Requests</p>
         <h1>Website inbox</h1>
-        <p>After the Google Sheets backend is connected, enter your private PIN to read saved prayer and contact requests. Until then, this page only shows backup copies submitted from this same browser.</p>
+        <p>This fixed admin page reads Google Sheets using a static-site safe connection. Enter your private Apps Script PIN to load saved prayer and contact requests.</p>
       </div>
       <div class="admin-panel">
-        <label>Inbox PIN<input id="adminPin" type="password" placeholder="Enter Google Apps Script PIN"></label>
+        <label>Inbox PIN<input id="adminPin" type="password" placeholder="Enter Google Apps Script PIN" autocomplete="current-password"></label>
         <button id="loadRequests" class="button button-primary" type="button">Load Requests</button>
         <p id="adminStatus" class="form-status" role="status"></p>
       </div>
@@ -38,13 +38,98 @@
         </table>
       </div>
       <div class="admin-help">
-        <h2>Setup needed for full inbox</h2>
-        <p>Use the included file <strong>google-sheets-request-backend-template.txt</strong> to create a Google Apps Script backend. Paste the deployed Web App URL into <strong>request-config.js</strong>. Then this page will read the Google Sheet.</p>
+        <h2>If it still does not open</h2>
+        <p>Use the exact PIN set in Google Apps Script. If you forgot it, change <strong>ADMIN_PIN</strong> in Apps Script, then deploy a <strong>New version</strong>.</p>
       </div>
     </section>
   </main>
 
-  <script src="request-config.js"></script>
-  <script src="admin.js"></script>
+  <script>
+    const GOOGLE_SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz2IyR85kB4S5QhztURhvDSzIohxY8WJ2kzCrtrJcw_z6VTtr8-aPA7ZEKoF4ub9enk/exec';
+    const tbody = document.getElementById('requestsBody');
+    const statusEl = document.getElementById('adminStatus');
+    const pinEl = document.getElementById('adminPin');
+    const loadBtn = document.getElementById('loadRequests');
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    function renderRequests(requests) {
+      if (!requests || !requests.length) {
+        tbody.innerHTML = '<tr><td colspan="6">No requests found yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = requests.map((item) => `
+        <tr>
+          <td>${escapeHtml(new Date(item.timestamp).toLocaleString())}</td>
+          <td>${escapeHtml(item.name)}</td>
+          <td>${escapeHtml(item.contact)}</td>
+          <td>${escapeHtml(item.type)}</td>
+          <td>${escapeHtml(item.message)}</td>
+          <td>${escapeHtml(item.source || item.page || 'website')}</td>
+        </tr>
+      `).join('');
+    }
+
+    function getLocalCopies() {
+      try { return JSON.parse(localStorage.getItem('twmfcRequestCopies') || '[]'); }
+      catch (error) { return []; }
+    }
+
+    function loadRequestsWithJsonp(pin) {
+      return new Promise((resolve, reject) => {
+        const callbackName = `twmfcInboxCallback_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+        const script = document.createElement('script');
+        const timeoutId = setTimeout(() => {
+          cleanup();
+          reject(new Error('Google Web App did not answer. Make sure Apps Script is deployed as Web App with access set to Anyone.'));
+        }, 20000);
+
+        function cleanup() {
+          clearTimeout(timeoutId);
+          try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+          script.remove();
+        }
+
+        window[callbackName] = (data) => {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = () => {
+          cleanup();
+          reject(new Error('Google Web App script load failed. Check the deployment access and redeploy a New version.'));
+        };
+
+        script.src = `${GOOGLE_SHEETS_WEB_APP_URL}?pin=${encodeURIComponent(pin)}&callback=${encodeURIComponent(callbackName)}&t=${Date.now()}`;
+        document.body.appendChild(script);
+      });
+    }
+
+    async function loadRequests() {
+      const localCopies = getLocalCopies();
+      const pin = pinEl.value.trim();
+      if (!pin) {
+        statusEl.textContent = 'Enter your inbox PIN.';
+        return;
+      }
+      statusEl.textContent = 'Loading Google Sheet inbox...';
+      try {
+        const data = await loadRequestsWithJsonp(pin);
+        if (!data.ok) throw new Error(data.error || 'Could not load requests');
+        renderRequests(data.requests || []);
+        statusEl.textContent = `Loaded ${(data.requests || []).length} request(s) from Google Sheets.`;
+      } catch (error) {
+        renderRequests(localCopies);
+        const message = error && error.message ? error.message : 'Unknown error';
+        statusEl.textContent = `Google Sheet inbox could not open: ${message}. Showing browser backup copies only.`;
+      }
+    }
+
+    loadBtn.addEventListener('click', loadRequests);
+    pinEl.addEventListener('keydown', (event) => { if (event.key === 'Enter') loadRequests(); });
+    renderRequests(getLocalCopies());
+  </script>
 </body>
 </html>

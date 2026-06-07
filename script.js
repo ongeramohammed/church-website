@@ -124,21 +124,22 @@ requestForms.forEach((form) => {
 
     const submitButton = form.querySelector('button[type="submit"]');
     if (submitButton) submitButton.disabled = true;
-    if (formStatus) formStatus.textContent = 'Sending request directly...';
+    if (formStatus) formStatus.textContent = 'Sending directly to the church inbox...';
     saveLocalRequestCopy(data);
 
     const results = [];
-    try { results.push(await sendToFormService(data)); } catch (error) { results.push(false); }
+    // Google Sheets / Apps Script is the direct channel. It saves the request and emails the church from the backend,
+    // without opening the visitor's email app.
     try { results.push(await sendToGoogleSheets(data)); } catch (error) { results.push(false); }
+    // Optional silent fallback only if a hosted form endpoint is configured. This is AJAX, not mailto.
+    try { results.push(await sendToFormService(data)); } catch (error) { results.push(false); }
 
     if (results.some(Boolean)) {
-      if (formStatus) formStatus.textContent = requestConfig.googleSheetsWebAppUrl
-        ? 'Request sent. It has also been saved for the church inbox.'
-        : 'Request sent directly to info@TWMFC.org. First-time FormSubmit use may require email confirmation.';
+      if (formStatus) formStatus.textContent = 'Request sent directly. It has been submitted to the church inbox.';
       form.reset();
       updateWhatsAppLink(form);
     } else {
-      if (formStatus) formStatus.textContent = 'Direct sending failed. Please use the WhatsApp button or email info@TWMFC.org.';
+      if (formStatus) formStatus.textContent = 'Direct sending failed. Please use the WhatsApp button or contact info@TWMFC.org.';
     }
     if (submitButton) submitButton.disabled = false;
   });

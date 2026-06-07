@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin.js
+Disallow: /google-sheets-request-backend-template.txt
+Disallow: /request-config.js
+
+Sitemap: https://waymaker-church.org/sitemap.xml

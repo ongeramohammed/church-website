@@ -1,15 +1,20 @@
 /*
 The Way Maker Fellowship Church request backend for Google Sheets + email + website inbox.
 
+IMPORTANT FIX:
+This version works in a standalone Apps Script project. It creates/opens its own
+Google Sheet and saves the Sheet ID in Script Properties, so it will not crash with:
+"Cannot read properties of null (reading 'getSheetByName')".
+
 Setup:
 1. Go to https://script.google.com while logged into the Google account that should own the request sheet.
-2. New project -> paste this whole script.
+2. Paste this whole script into Code.gs, replacing the old code.
 3. Change ADMIN_PIN below to a private PIN.
-4. Run setup() once and approve permissions.
-5. Deploy -> New deployment -> Web app.
+4. Click Save.
+5. Run setup() once and approve permissions.
+6. Deploy -> Manage deployments -> Edit/pencil -> Version: New version -> Deploy.
    Execute as: Me
    Who has access: Anyone
-6. Copy the Web App URL and paste it into request-config.js as googleSheetsWebAppUrl.
 
 Requests will be emailed to info@TWMFC.org and saved in the Google Sheet.
 Open admin.html on the website, enter the same PIN, and read the saved requests.
@@ -18,41 +23,75 @@ Open admin.html on the website, enter the same PIN, and read the saved requests.
 const ADMIN_PIN = 'CHANGE_THIS_PIN';
 const TO_EMAIL = 'info@TWMFC.org';
 const SHEET_NAME = 'TWMFC Requests';
+const SHEET_ID_PROPERTY = 'TWMFC_REQUEST_SHEET_ID';
 const HEADERS = ['Timestamp','Name','Contact','Type','Message','Page','Source'];
 
 function setup() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.create(SHEET_NAME);
-  const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
-  if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
-  sheet.setFrozenRows(1);
+  const sheet = getSheet_();
+  const ss = sheet.getParent();
   return ss.getUrl();
 }
 
+function getSpreadsheet_() {
+  const props = PropertiesService.getScriptProperties();
+  const savedId = props.getProperty(SHEET_ID_PROPERTY);
+  if (savedId) {
+    try {
+      return SpreadsheetApp.openById(savedId);
+    } catch (error) {
+      // If the saved sheet was deleted or access changed, create a fresh one below.
+    }
+  }
+
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = active || SpreadsheetApp.create(SHEET_NAME);
+  props.setProperty(SHEET_ID_PROPERTY, ss.getId());
+  return ss;
+}
+
 function getSheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
   const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
-  if (sheet.getLastRow() === 0) sheet.appendRow(HEADERS);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+    sheet.setFrozenRows(1);
+  }
   return sheet;
 }
 
+function output_(e, payload) {
+  const json = JSON.stringify(payload);
+  const callback = e && e.parameter && e.parameter.callback;
+  if (callback) {
+    return ContentService
+      .createTextOutput(`${callback}(${json});`)
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService
+    .createTextOutput(json)
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
-  const data = JSON.parse(e.postData.contents || '{}');
-  const sheet = getSheet_();
-  const timestamp = new Date();
-  const row = [
-    timestamp,
-    data.name || '',
-    data.contact || '',
-    data.type || '',
-    data.message || '',
-    data.page || '',
-    data.source || 'website'
-  ];
-  sheet.appendRow(row);
-  MailApp.sendEmail({
-    to: TO_EMAIL,
-    subject: `${data.type || 'Website request'} from ${data.name || 'Website visitor'}`,
-    body: `New TWMFC website request
+  try {
+    const data = JSON.parse((e.postData && e.postData.contents) || '{}');
+    const sheet = getSheet_();
+    const timestamp = new Date();
+    const row = [
+      timestamp,
+      data.name || '',
+      data.contact || '',
+      data.type || '',
+      data.message || '',
+      data.page || '',
+      data.source || 'website'
+    ];
+    sheet.appendRow(row);
+
+    MailApp.sendEmail({
+      to: TO_EMAIL,
+      subject: `${data.type || 'Website request'} from ${data.name || 'Website visitor'}`,
+      body: `New TWMFC website request
 
 Name: ${data.name || ''}
 Contact: ${data.contact || ''}
@@ -61,17 +100,31 @@ Page: ${data.page || ''}
 
 Message:
 ${data.message || ''}`
-  });
-  return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+    });
+
+    return output_(e, {ok:true});
+  } catch (error) {
+    return output_(e, {ok:false, error:String(error && error.message ? error.message : error)});
+  }
 }
 
 function doGet(e) {
-  if ((e.parameter.pin || '') !== ADMIN_PIN) {
-    return ContentService.createTextOutput(JSON.stringify({ok:false, error:'Wrong PIN'})).setMimeType(ContentService.MimeType.JSON);
+  try {
+    if ((e.parameter.pin || '') !== ADMIN_PIN) {
+      return output_(e, {ok:false, error:'Wrong PIN'});
+    }
+    const rows = getSheet_().getDataRange().getValues();
+    const data = rows.slice(1).reverse().map(r => ({
+      timestamp: r[0],
+      name: r[1],
+      contact: r[2],
+      type: r[3],
+      message: r[4],
+      page: r[5],
+      source: r[6]
+    }));
+    return output_(e, {ok:true, requests:data});
+  } catch (error) {
+    return output_(e, {ok:false, error:String(error && error.message ? error.message : error)});
   }
-  const rows = getSheet_().getDataRange().getValues();
-  const data = rows.slice(1).reverse().map(r => ({
-    timestamp: r[0], name: r[1], contact: r[2], type: r[3], message: r[4], page: r[5], source: r[6]
-  }));
-  return ContentService.createTextOutput(JSON.stringify({ok:true, requests:data})).setMimeType(ContentService.MimeType.JSON);
 }
