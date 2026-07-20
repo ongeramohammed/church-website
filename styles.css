@@ -687,7 +687,7 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
 .time-card label {
   display: block;
   margin-top: 18px;
-  color: var(--gold);
+  color: #7a5200;
   font-size: 13px;
   font-weight: 900;
   letter-spacing: .08em;
@@ -1305,4 +1305,181 @@ button[disabled] { opacity: .68; cursor: wait; }
 @media (max-width: 640px) {
   .request-actions { grid-template-columns: 1fr; }
   .admin-inbox-section { padding-top: 92px; }
+}
+
+/* July 2026 church registration, sharing, payments, and visibility update */
+.nav-join {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffd166, #f4b840);
+  color: #102a43 !important;
+  font-weight: 950 !important;
+  box-shadow: rgba(183, 121, 0, .22) 0 10px 22px;
+}
+.share-invitation,
+.join-family-cta {
+  max-width: 1180px;
+  margin: 26px auto;
+  padding: clamp(20px, 4vw, 32px);
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  background: linear-gradient(135deg, #073047, #075985);
+  color: #fff;
+  box-shadow: rgba(7, 48, 71, .18) 0 18px 42px;
+}
+.share-invitation strong,
+.join-family-cta strong,
+.video-testimony-note strong {
+  display: block;
+  color: #ffd166;
+  font-size: clamp(21px, 2.4vw, 30px);
+  line-height: 1.15;
+}
+.share-invitation span,
+.join-family-cta span,
+.video-testimony-note span {
+  display: block;
+  margin-top: 7px;
+  color: #fff;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.share-bar a,
+.share-bar button {
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, .14) 0 8px 18px;
+}
+.share-whatsapp { background: #0b6f63; }
+.share-facebook { background: #0d5fc6; }
+.share-more { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+.footer-share {
+  display: grid;
+  gap: 9px;
+  justify-items: center;
+  margin: 10px auto 0;
+}
+.footer-share > span { color: #fff; font-weight: 800; }
+.footer-share .share-bar { justify-content: center; }
+.video-testimony-note {
+  grid-column: 1 / -1;
+  padding: 24px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 209, 102, .35);
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.payment-brand-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0 18px;
+}
+.payment-brand-row img {
+  display: block;
+  width: auto;
+  object-fit: contain;
+  border: 1px solid rgba(7, 48, 71, .12);
+  border-radius: 7px;
+  background: #fff;
+}
+.payment-brand-row small {
+  color: #334e68;
+  font-weight: 800;
+}
+.join-church-card {
+  border: 2px solid rgba(244, 184, 64, .65);
+  background: linear-gradient(180deg, #fffdf6, #fff4cf);
+}
+/* Explicitly fix the two low-contrast contact descriptions reported in the document. */
+#contact.contact-section .section-heading p,
+#contact.contact-section .section-heading h2,
+.contact-page-hero .page-hero-inner > p,
+.contact-page-hero .page-hero-inner h1,
+.contact-action-section .section-heading h2,
+.contact-action-section .section-heading p {
+  color: #fff !important;
+  opacity: 1 !important;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, .68);
+}
+.contact-action-section .section-heading .eyebrow {
+  color: #ffd166 !important;
+  opacity: 1 !important;
+}
+.back-to-top-button {
+  position: fixed;
+  right: 18px;
+  bottom: 92px;
+  z-index: 1200;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #ffd166;
+  color: #102a43;
+  font-size: 23px;
+  font-weight: 1000;
+  box-shadow: rgba(7, 48, 71, .26) 0 12px 30px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .2s, transform .2s, visibility .2s;
+}
+.back-to-top-button.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+@media (max-width: 760px) {
+  .share-invitation,
+  .join-family-cta { align-items: stretch; flex-direction: column; }
+  .share-bar { width: 100%; }
+  .share-bar a,
+  .share-bar button { flex: 1 1 130px; text-align: center; }
+  .join-family-cta .button { width: 100%; }
+  .back-to-top-button { right: 14px; bottom: 94px; }
+}
+
+/* Keep essential content readable even when scroll observers or screenshots do not fire. */
+.reveal,
+.reveal.visible {
+  opacity: 1 !important;
+  transform: none !important;
+}
+@media (max-width: 640px) {
+  .mobile-sticky-cta {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(18px);
+    transition: opacity .2s, transform .2s, visibility .2s;
+  }
+  .mobile-sticky-cta.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
 }

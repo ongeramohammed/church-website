@@ -224,11 +224,12 @@ const chatForm = document.getElementById('chatForm');
 const chatInput = document.getElementById('chatInput');
 
 const botReplies = {
-  service: 'The Way Maker Fellowship Church is a global online church. You can watch sermons and messages through YouTube @TWMFC.',
+  service: 'Join a live service through the Online Service page or Zoom. The Way Maker Fellowship Church also shares sermons and messages through YouTube @TWMFC.',
+  join: 'Register to join The Way Maker Fellowship Church and become part of the online family: https://chebs-canada.aweb.page/grace-based-fellowship',
   prayer: 'You can submit a confidential prayer request using the Prayer & Counselling form. Our intercession team stands in the gap for prayer requests.',
-  giving: 'You can support the mission through PayPal, Zelle 551 330 6121, or M-Pesa Pay Bill 222111, Account 034000005078.',
+  giving: 'You can support the mission through PayPal, Visa or Mastercard through PayPal, Zelle 551 330 6121, or M-Pesa Pay Bill 222111, Account 034000005078.',
   contact: 'Contact TWMFC by phone at +1 551 330 6121 or email info@TWMFC.org. Address: USA.',
-  default: 'Thank you for contacting The Way Maker Fellowship Church. We can help with online service, prayer, giving, ministries, partnership, and contact information.'
+  default: 'Thank you for contacting The Way Maker Fellowship Church. We can help with joining the church, online service, prayer, giving, ministries, partnership, and contact information.'
 };
 
 function addChatMessage(text, sender = 'bot') {
@@ -242,7 +243,8 @@ function addChatMessage(text, sender = 'bot') {
 
 function getBotReply(text) {
   const lower = text.toLowerCase();
-  if (lower.includes('service') || lower.includes('online') || lower.includes('youtube') || lower.includes('sermon')) return botReplies.service;
+  if ((lower.includes('join') || lower.includes('register') || lower.includes('member')) && !lower.includes('service')) return botReplies.join;
+  if (lower.includes('service') || lower.includes('online') || lower.includes('youtube') || lower.includes('sermon') || lower.includes('zoom')) return botReplies.service;
   if (lower.includes('prayer') || lower.includes('counsel') || lower.includes('help')) return botReplies.prayer;
   if (lower.includes('give') || lower.includes('paypal') || lower.includes('zelle') || lower.includes('offering') || lower.includes('tithe') || lower.includes('mpesa')) return botReplies.giving;
   if (lower.includes('contact') || lower.includes('phone') || lower.includes('call') || lower.includes('email') || lower.includes('address')) return botReplies.contact;
@@ -324,3 +326,88 @@ if (musicToggle) {
     else startSoftChurchMusic();
   });
 }
+
+// Church registration, page sharing, and reliable Back-to-top controls.
+const canonicalUrl = document.querySelector('link[rel="canonical"]')?.href || window.location.href.split('#')[0];
+const shareTitle = 'The Way Maker Fellowship Church';
+const shareText = 'Join The Way Maker Fellowship Church online for worship, prayer, Bible teaching, and fellowship.';
+
+function configureShareBar(bar) {
+  const whatsapp = bar.querySelector('[data-share="whatsapp"]');
+  const facebook = bar.querySelector('[data-share="facebook"]');
+  const more = bar.querySelector('[data-share="more"]');
+  if (whatsapp) whatsapp.href = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${canonicalUrl}`)}`;
+  if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`;
+  more?.addEventListener('click', async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: shareTitle, text: shareText, url: canonicalUrl }); } catch (error) { /* User cancelled. */ }
+      return;
+    }
+    const original = more.textContent;
+    try {
+      await navigator.clipboard.writeText(canonicalUrl);
+      more.textContent = 'Link copied';
+    } catch (error) {
+      more.textContent = canonicalUrl;
+    }
+    setTimeout(() => { more.textContent = original; }, 2200);
+  });
+}
+
+document.querySelectorAll('.share-bar').forEach(configureShareBar);
+
+const footer = document.querySelector('.footer');
+if (footer && !footer.querySelector('.footer-share')) {
+  const footerShare = document.createElement('div');
+  footerShare.className = 'footer-share';
+  footerShare.innerHTML = `<span>Share this page</span><div class="share-bar"><a class="share-whatsapp" href="#" data-share="whatsapp" target="_blank" rel="noopener">WhatsApp</a><a class="share-facebook" href="#" data-share="facebook" target="_blank" rel="noopener">Facebook</a><button class="share-more" type="button" data-share="more">Instagram / More</button></div>`;
+  footer.appendChild(footerShare);
+  configureShareBar(footerShare.querySelector('.share-bar'));
+}
+
+const chatOptions = document.querySelector('.chatbot-options');
+if (chatOptions && !chatOptions.querySelector('[data-reply="join"]')) {
+  const joinButton = document.createElement('button');
+  joinButton.type = 'button';
+  joinButton.dataset.reply = 'join';
+  joinButton.textContent = 'Join the Church';
+  joinButton.addEventListener('click', () => {
+    addChatMessage(joinButton.textContent, 'user');
+    setTimeout(() => addChatMessage(botReplies.join), 350);
+  });
+  chatOptions.appendChild(joinButton);
+}
+
+const stickyCta = document.querySelector('.mobile-sticky-cta');
+if (stickyCta) {
+  const hero = document.querySelector('.hero, .page-hero');
+  const updateStickyCta = () => {
+    const revealAfter = hero ? Math.max(420, hero.offsetHeight * 0.72) : 500;
+    stickyCta.classList.toggle('is-visible', window.scrollY > revealAfter);
+  };
+  updateStickyCta();
+  window.addEventListener('scroll', updateStickyCta, { passive: true });
+}
+
+if (!document.querySelector('.back-to-top-button')) {
+  const backToTop = document.createElement('a');
+  backToTop.href = '#top';
+  backToTop.className = 'back-to-top-button';
+  backToTop.setAttribute('aria-label', 'Back to top');
+  backToTop.textContent = '↑';
+  document.body.appendChild(backToTop);
+  const updateBackToTop = () => backToTop.classList.toggle('visible', window.scrollY > 650);
+  updateBackToTop();
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
+  backToTop.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+}
+
+document.querySelectorAll('.footer-top-link').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
+});
