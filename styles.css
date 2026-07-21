@@ -297,14 +297,23 @@ p { font-size: 17px; line-height: 1.6; color: inherit; opacity: .92; }
 .service-details-card strong { color: #b77900; font-size: 22px; }
 .service-flyer-card { display: grid; justify-items: center; gap: 18px; }
 .service-flyer-card img {
-  width: min(100%, 350px);
-  border-radius: 14px;
+  width: min(100%, 380px);
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(7, 48, 71, .1);
+  border-radius: 18px;
   box-shadow: rgba(7, 48, 71, .22) 0 18px 38px;
 }
+.service-flyer-copy { display: grid; gap: 4px; text-align: center; max-width: 38ch; }
+.service-flyer-copy strong { color: var(--near-black); font-size: 18px; }
+.service-flyer-copy span { color: var(--muted-black); font-size: 14px; line-height: 1.55; }
 .service-flyer-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%; }
+.service-flyer-actions .button { min-width: 148px; }
 
 .live-grid, .split-section, .contact-grid { max-width: 1180px; margin: auto; display: grid; grid-template-columns: 1.4fr .6fr; gap: 28px; align-items: stretch; }
-.video-frame { background: var(--black); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16/9; }
+.live-grid > *, .split-section > *, .contact-grid > * { min-width: 0; }
+.video-frame { width: 100%; background: var(--black); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16/9; }
 .video-frame iframe { width: 100%; height: 100%; border: 0; }
 .service-panel { background: var(--light); border-radius: 18px; padding: 28px; }
 .check-list { padding: 0; margin: 24px 0; list-style: none; }
@@ -759,9 +768,9 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   box-shadow: rgba(7, 48, 71, 0.08) 0 18px 42px;
 }
 .leader-avatar {
-  width: 78px;
-  height: 78px;
-  border-radius: 24px;
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
   display: grid;
   place-items: center;
   color: white;
@@ -769,6 +778,27 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   font-size: 22px;
   background: linear-gradient(135deg, var(--green), var(--blue));
   margin-bottom: 22px;
+  overflow: hidden;
+  border: 3px solid #fff;
+  box-shadow: rgba(7, 48, 71, .18) 0 12px 28px;
+}
+.leader-photo {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: var(--near-black);
+  border-color: #d6aa33;
+  display: block;
+  position: relative;
+}
+.leader-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
 }
 .leader-role { color: var(--link-blue); opacity: 1; font-weight: 800; }
 .team-strip {
