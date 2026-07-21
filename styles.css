@@ -295,6 +295,63 @@ p { font-size: 17px; line-height: 1.6; color: inherit; opacity: .92; }
 }
 .service-details-card h3 { color: var(--near-black); font-size: clamp(25px, 2.5vw, 34px); margin: 0; }
 .service-details-card strong { color: #b77900; font-size: 22px; }
+.service-card-sunday,
+.service-card-study {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  gap: 14px;
+  color: white;
+  border-color: rgba(255, 255, 255, .24);
+  box-shadow: rgba(7, 48, 71, .22) 0 24px 50px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.service-card-sunday:hover,
+.service-card-study:hover { transform: translateY(-4px); box-shadow: rgba(7, 48, 71, .3) 0 30px 58px; }
+.service-card-sunday {
+  background:
+    linear-gradient(145deg, rgba(3, 24, 40, .94) 0%, rgba(5, 74, 112, .82) 100%),
+    url("assets/gallery/worship-hall.jpg") center / cover no-repeat;
+}
+.service-card-study {
+  background:
+    linear-gradient(145deg, rgba(5, 28, 48, .94) 0%, rgba(128, 82, 0, .76) 100%),
+    url("assets/gallery/church-window.jpg") center / cover no-repeat;
+}
+.service-card-sunday::after,
+.service-card-study::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 18px;
+  pointer-events: none;
+}
+.service-card-sunday span,
+.service-card-study span {
+  width: fit-content;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #fff1bd;
+  background: rgba(2, 20, 33, .54);
+  border: 1px solid rgba(255, 225, 154, .42);
+  letter-spacing: .1em;
+  font-size: 13px;
+  backdrop-filter: blur(6px);
+}
+.service-card-sunday h3,
+.service-card-study h3 {
+  color: white;
+  font-size: clamp(27px, 2.5vw, 36px);
+  line-height: 1.08;
+  text-shadow: rgba(0, 0, 0, .36) 0 2px 12px;
+}
+.service-details-section .service-card-sunday p,
+.service-details-section .service-card-study p { color: rgba(255, 255, 255, .94); text-shadow: rgba(0, 0, 0, .3) 0 1px 8px; }
+.service-card-sunday strong,
+.service-card-study strong { color: #ffe19a; }
+.service-card-sunday .button,
+.service-card-study .button { position: relative; z-index: 1; }
 .service-flyer-card { display: grid; justify-items: center; align-self: start; gap: 16px; }
 .service-flyer-preview {
   display: block;
