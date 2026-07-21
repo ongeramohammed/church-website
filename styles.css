@@ -295,15 +295,23 @@ p { font-size: 17px; line-height: 1.6; color: inherit; opacity: .92; }
 }
 .service-details-card h3 { color: var(--near-black); font-size: clamp(25px, 2.5vw, 34px); margin: 0; }
 .service-details-card strong { color: #b77900; font-size: 22px; }
-.service-flyer-card { display: grid; justify-items: center; gap: 18px; }
+.service-flyer-card { display: grid; justify-items: center; align-self: start; gap: 16px; }
+.service-flyer-preview {
+  display: block;
+  width: min(100%, 320px);
+  border-radius: 18px;
+  box-shadow: rgba(7, 48, 71, .22) 0 18px 38px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.service-flyer-preview:hover { transform: translateY(-3px); box-shadow: rgba(7, 48, 71, .28) 0 24px 48px; }
 .service-flyer-card img {
-  width: min(100%, 380px);
+  width: 100%;
+  height: auto;
   aspect-ratio: 2 / 3;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   border: 1px solid rgba(7, 48, 71, .1);
   border-radius: 18px;
-  box-shadow: rgba(7, 48, 71, .22) 0 18px 38px;
 }
 .service-flyer-copy { display: grid; gap: 4px; text-align: center; max-width: 38ch; }
 .service-flyer-copy strong { color: var(--near-black); font-size: 18px; }
@@ -798,6 +806,8 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   height: 100%;
   object-fit: cover;
   object-position: center 18%;
+  transform: scale(1.75);
+  transform-origin: 50% 28%;
   display: block;
 }
 .leader-role { color: var(--link-blue); opacity: 1; font-weight: 800; }
