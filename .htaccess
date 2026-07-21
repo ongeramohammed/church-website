@@ -19,8 +19,15 @@ DirectoryIndex index.html
   ExpiresByType image/webp "access plus 30 days"
   ExpiresByType video/mp4 "access plus 30 days"
   ExpiresByType audio/mpeg "access plus 30 days"
-  ExpiresByType text/css "access plus 7 days"
-  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType text/css "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+</IfModule>
+
+# Keep page markup fresh after church content updates
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
 
