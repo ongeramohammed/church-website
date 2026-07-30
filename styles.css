@@ -823,8 +823,9 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   max-width: 1180px;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 18px;
+  align-items: stretch;
 }
 .leader-card {
   background: var(--light);
@@ -832,41 +833,31 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
   padding: 28px;
   box-shadow: rgba(7, 48, 71, 0.08) 0 18px 42px;
 }
-.leader-avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 28px;
-  display: grid;
-  place-items: center;
-  color: white;
-  font-weight: 900;
-  font-size: 22px;
-  background: linear-gradient(135deg, var(--green), var(--blue));
-  margin-bottom: 22px;
-  overflow: hidden;
-  border: 3px solid #fff;
-  box-shadow: rgba(7, 48, 71, .18) 0 12px 28px;
-}
+/* A consistent, uncropped portrait frame keeps every leader photo complete. */
 .leader-photo {
-  width: 112px;
-  height: 112px;
-  border-radius: 50%;
-  background: var(--near-black);
-  border-color: #d6aa33;
-  display: block;
+  width: 100%;
+  height: 280px;
+  margin: 0 0 22px;
+  overflow: hidden;
+  border: 2px solid #d6aa33;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #edf8fc, #fff7dd);
+  box-shadow: rgba(7, 48, 71, .14) 0 12px 28px;
   position: relative;
 }
 .leader-photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 18%;
-  transform: scale(1.75);
-  transform-origin: 50% 28%;
+  position: absolute !important;
+  inset: 10px !important;
+  width: calc(100% - 20px) !important;
+  height: calc(100% - 20px) !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
+.leader-card h3 { margin-bottom: 8px; }
+.leader-card p:last-child { margin-bottom: 0; }
 .leader-role { color: var(--link-blue); opacity: 1; font-weight: 800; }
 .team-strip {
   max-width: 1180px;
@@ -899,11 +890,12 @@ input:focus, select:focus, textarea:focus, button:focus, a:focus { outline: 2px 
 @media (max-width: 1050px) {
   .impact-dashboard { grid-template-columns: repeat(2, 1fr); }
   .impact-ring { grid-column: span 2; }
-  .leadership-grid { grid-template-columns: 1fr; }
+  .leadership-grid { grid-template-columns: repeat(2, 1fr); }
   .partner-band { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
-  .impact-dashboard, .partner-band { grid-template-columns: 1fr; }
+  .impact-dashboard, .partner-band, .leadership-grid { grid-template-columns: 1fr; }
+  .leader-photo { height: 310px; }
   .impact-ring { grid-column: auto; }
   .impact-card, .impact-ring { min-height: auto; }
   .time-card strong { font-size: clamp(42px, 14vw, 64px); letter-spacing: -2px; }
